@@ -1,0 +1,166 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<string.h>
+#include<cstring>
+#include<ctime>
+#include<cstdlib>
+#include<conio.h>
+#include<stdio.h>
+using namespace std;
+
+std::pair<int *,int>ikilik_taban(int sayi);
+std::pair<int *,int>ikilik_taban(int sayi)
+{    int kalan=0;
+   int bolum=0;
+   int i=0; 
+    int dizi[11];
+	while(sayi>=1)
+	{   if(sayi==1)
+	{
+		kalan=1;
+		dizi[i]=kalan;  
+		
+		sayi=0;
+		
+		
+	}
+	else
+	{
+		kalan=sayi%2;
+		bolum=sayi/2;
+		sayi=bolum;
+	
+		dizi[i]=kalan;
+		
+	}
+		
+		
+		i++;
+		
+	}
+	
+   
+	int  asil_dizi[i];
+	int a=0;
+    for(int j=i-1; j>=0; j--)
+    {
+    	asil_dizi[a]=dizi[j];
+    	a++;
+    }
+    
+    
+	
+	for(int j=0; j<i; j++)
+	{
+		cout<<asil_dizi[j];
+	}
+	
+	int *s;
+	s=(int *)malloc(i*sizeof(int));
+	
+	for(int b=0; b<i; b++)
+	{
+		*(s+b)=asil_dizi[b];
+	}
+    
+    return std::make_pair((int*)s,i);
+
+
+	
+}
+
+int main()
+{
+	 
+	
+	int sayi=0;
+	srand(time(NULL));
+	sayi=1+rand()%2048;
+	cout<<"uretilen sayi : "<<sayi<<endl;
+	std::pair<int *,int> p = ikilik_taban(sayi);
+    int *ptr;
+    int boyut;
+   
+   boyut=p.second;
+    cout<<endl;
+    cout<<"dizi boyutu : "<<boyut<<endl;
+    ptr=(int *)malloc( boyut * sizeof(int) );
+     ptr=p.first;
+     
+    
+    cout<<endl;
+    cout<<endl;
+   
+    int sayac=10;
+    int tahmin;
+    int *tahmin_ptr;
+    int tahmin_boyut;
+    int kucuk_boyut;
+    int kontrol=0;
+    int birlerin_yeri=0;
+    int buyuk_boyut=0;
+    int fark1=0;// saklanan sayi daha fazla bite sahipse
+    int fark2=0;//tahmin edilen sayi daha fazla bite sahipse
+    while(sayac>=1)
+    {   
+        cout<<sayac<<" tane hakkiniz kaldi"<<endl;
+    	cout<<"tahmin ettiginiz sayiyi girin :"<<endl;
+    	cin>>tahmin;
+    	cout<<endl<<"tahmin ettiginiz  sayinin binary hali : ";
+    	std::pair<int *,int> t= ikilik_taban(tahmin);
+    	tahmin_boyut=t.second;
+    	tahmin_ptr=(int *)malloc( tahmin_boyut * sizeof(int) );
+    	 tahmin_ptr=t.first;
+    	
+    cout<<endl;
+    if(boyut<=tahmin_boyut)
+    {
+    	kucuk_boyut=boyut;
+    	buyuk_boyut=tahmin_boyut;
+    	fark1=0;
+    	fark2=buyuk_boyut-kucuk_boyut;
+    }
+    else
+    {
+    	kucuk_boyut=tahmin_boyut;
+    	buyuk_boyut=boyut;
+    	fark2=0;
+    	fark1=buyuk_boyut-kucuk_boyut;
+    }
+  
+    for(int i=0; i<kucuk_boyut; i++)
+    {   
+    	if(*(ptr+i+fark1)==*(tahmin_ptr+i+fark2))
+    	{
+    		kontrol++;
+    	}
+    	if(*(ptr+i+fark1)==1 && *(tahmin_ptr+i+fark2)==1)
+    	{
+    		birlerin_yeri++;
+    	}
+    	
+    	
+    }
+    
+    if(kontrol==kucuk_boyut)
+    {
+    	cout<<"TEBRIKLER KAZANDINIZ"<<endl;
+    	break;
+    }
+    else
+    {
+    	cout<<"yanlis tahmin"<<endl;
+    	cout<<"ayni yerde "<<birlerin_yeri<<" tane 1 vardir"<<endl;
+    	birlerin_yeri=0;
+    	kontrol=0;
+    	sayac--;
+    }
+    	
+    	
+    	cout<<endl;
+    
+    	
+    }
+	return 0;
+}
